@@ -514,11 +514,18 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
 .rb-mid{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--t3);text-transform:uppercase;text-align:center;white-space:nowrap}
 .strk-odd{margin-left:auto;font-size:11px;font-weight:800;color:var(--accB)}
 @media (max-width:700px){
-  .gsel{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .gsel{grid-template-columns:1fr!important;gap:6px}
+  .gbtn{padding:7px 10px}
+  .gbtn .gb-tm{gap:6px;font-size:13px}
+  .gbtn .gb-tm .flagimg{height:20px!important;width:30px!important}
+  .gb-meta{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .gb-aest{display:none}
   .glog-grid{grid-template-columns:1fr}
   .md-info{gap:6px;padding:8px}
   .md-menu{right:auto;left:0}
 }
+/* game-log cells never wrap, so wide tables scroll horizontally instead of squishing */
+.glog-wrap table th,.glog-wrap table td{white-space:nowrap}
 /* ---- FIFA-fantasy style side-by-side vertical formations ---- */
 .ffv-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .ffv-card{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:10px}
@@ -536,9 +543,15 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
 .ffv-meta{margin-top:7px;font-size:10px;color:var(--t3);text-align:center}
 .ffv-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:12px;z-index:2}
 @media (max-width:700px){
-  .ffv-player .p-jersey,.ffv-player .p-jersey-img,.ffv-player .p-jersey-img svg{width:50px;height:50px}
-  .ffv-player .p-jnum{font-size:15px}
-  .ffv-name{font-size:9.5px;max-width:62px}
+  .ffv-wrap{gap:6px}
+  .ffv-card{padding:6px}
+  .ffv-hd{font-size:11px;padding:5px 6px;gap:5px}
+  .ffv-pitch{aspect-ratio:5/6;padding:9px 2px 6px;gap:2px}
+  .ffv-row{gap:1px}
+  .ffv-player .p-jersey,.ffv-player .p-jersey-img,.ffv-player .p-jersey-img svg{width:30px;height:30px}
+  .ffv-player .p-jnum{font-size:11px}
+  .ffv-name{font-size:8px;max-width:44px;padding:1px 3px;margin-top:2px}
+  .ffv-meta{font-size:8.5px;margin-top:5px}
 }
 /* ---- collapsible section header ---- */
 .stit.clpse{cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none}
@@ -1529,7 +1542,7 @@ function GameSelector({fixtures, sel, onSel}) {
                   style={{background: bg, borderColor: onS ? gc : undefined, boxShadow: onS ? '0 0 14px '+gc+'66' : undefined}}>
             <div className="gb-meta">
               {f.time && <span>🕐 {f.time} local</span>}
-              {f.aest && <span> · {f.aest}</span>}
+              {f.aest && <span className="gb-aest"> · {f.aest}</span>}
               {f.venue && <span className="gb-ven"> · 📍 {f.venue}</span>}
             </div>
             <div className="gb-row">
@@ -2311,7 +2324,6 @@ function PlayerProfileModal({pid, opp, init, onClose}) {
       {k:'wc', label:'World Cup', games:periodGames.filter(g=>g.m.conf==='WC')},
     ];
     if (oppName) list.push({k:'opp', label:'vs '+abbr3(oppName), games:periodGames.filter(inOpp)});
-    if (oppName && primCat) list.push({k:'posopp', label:primLabel+' vs '+abbr3(oppName), games:periodGames.filter(g=>inOpp(g)&&posCatFromPos(g.p.pos)===primCat)});
     if (primCat) list.push({k:'pos', label:'As '+primLabel, games:periodGames.filter(g=>posCatFromPos(g.p.pos)===primCat)});
     return list.map(c => {
       let hits=0, n=0; c.games.forEach(({m,p:pp})=>{ const h=evalHit(stat,effThreshold,pp,m,pid); if(h==null) return; n++; if(h) hits++; });
