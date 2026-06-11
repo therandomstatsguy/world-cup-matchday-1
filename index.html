@@ -546,6 +546,10 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
   .odds-h2h .oh{font-size:11px}
   .glog{padding:8px}
   .glog-grid{gap:8px}
+  /* tighten cells so team stats (YR..CRD) fit the screen; opponent columns scroll off to the right */
+  .glog table{font-size:9.5px}
+  .glog th{font-size:8px;padding:5px 3px;letter-spacing:.2px}
+  .glog td{padding:5px 3px}
   /* player stats: keep both teams side-by-side, shrink cards to fit two narrow columns */
   .psb-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px}
   .psb-grid .pcard{gap:5px;padding:6px 6px;border-radius:7px;margin-bottom:4px}
@@ -583,14 +587,14 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
 @media (max-width:700px){
   .ffv-wrap{gap:6px;align-items:stretch}
   /* equal-height fields: stretch both cards, let the pitch flex to fill */
-  .ffv-card{padding:6px;display:flex;flex-direction:column}
-  .ffv-hd{font-size:10px;padding:5px 6px;gap:5px}
-  .ffv-pitch{aspect-ratio:auto;flex:1 1 auto;min-height:210px;padding:9px 2px 6px;gap:2px}
+  .ffv-card{padding:5px;display:flex;flex-direction:column}
+  .ffv-hd{font-size:10px;padding:4px 6px;gap:5px;margin-bottom:5px}
+  .ffv-pitch{aspect-ratio:auto;flex:1 1 auto;min-height:158px;padding:5px 2px 3px;gap:0}
   .ffv-row{gap:1px}
-  .ffv-player .p-jersey,.ffv-player .p-jersey-img,.ffv-player .p-jersey-img svg{width:30px;height:30px}
-  .ffv-player .p-jnum{font-size:10px}
-  .ffv-name{font-size:7px;max-width:42px;padding:1px 3px;margin-top:2px}
-  .ffv-meta{font-size:8px;margin-top:5px}
+  .ffv-player .p-jersey,.ffv-player .p-jersey-img,.ffv-player .p-jersey-img svg{width:26px;height:26px}
+  .ffv-player .p-jnum{font-size:9px}
+  .ffv-name{font-size:6.5px;max-width:42px;padding:0 3px;margin-top:0}
+  .ffv-meta{font-size:7.5px;margin-top:3px}
 }
 /* ---- collapsible section header ---- */
 .stit.clpse{cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none}
