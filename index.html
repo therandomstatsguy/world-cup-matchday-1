@@ -460,7 +460,9 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
   .pp-kpi{padding:5px 2px}
   .pp-kpi-l{font-size:7.5px;letter-spacing:.2px}
   .pp-kpi-v{font-size:15px}
-  .pp2-kit,.pp2-kit svg{width:52px;height:52px}
+  /* jersey stretches the full header height (name -> bottom of scorecards), as on desktop */
+  .pp2-kit{align-self:stretch}
+  .pp2-kit svg{width:auto;height:100%;max-height:none;min-height:0;max-width:128px}
   .pp2-id h2{font-size:17px}
 }
 /* ---- matchday: header date dropdown ---- */
@@ -544,8 +546,11 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
   .tsc-hdr .pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .odds-h2h{gap:7px 8px}
   .odds-h2h .oh{font-size:11px}
-  .glog{padding:8px}
-  .glog-grid{gap:8px}
+  /* keep each game-log card at column width (min-width:0) so the wide table scrolls INSIDE it
+     instead of stretching the card/page; table is cut to the content width like the other sections */
+  .glog{padding:8px;min-width:0;overflow:hidden}
+  .glog-grid{gap:8px;min-width:0}
+  .glog-wrap{min-width:0;max-width:100%;overflow-x:auto;overflow-y:auto}
   /* tighten cells so team stats (YR..CRD) fit the screen; opponent columns scroll off to the right */
   .glog table{font-size:9.5px}
   .glog th{font-size:8px;padding:5px 3px;letter-spacing:.2px}
@@ -2241,10 +2246,9 @@ function SRPlayerCard({r, side, onPick, opp, predStart, odd}) {
       <span className="jersey" style={{background: c1, color: tx}}>{r.jersey || '–'}</span>
       <div className="pinfo">
         <div className="ptext">
-          <div className="pname">{r.name} <span className={"ps-tag "+(predStart?'on':'off')}>{predStart?'Starter':'Bench'}</span></div>
+          <div className="pname">{r.name} <span className={"ps-tag "+(predStart?'on':'off')}>{predStart?'XI':'Bench'}</span></div>
           <div className="ppos">
             <span className={"pcat " + (r.cat||'')}>{r.cat || '?'}</span>
-            <span style={{marginLeft:5,marginRight:5}}>{fullPos(r.primaryPos)}</span>
             {odd && <span className="odd-chip">${(+odd.v).toFixed(2)}</span>}
           </div>
         </div>
@@ -2579,7 +2583,7 @@ function PlayerProfileModal({pid, opp, init, onClose}) {
             <div className="pp2-right">
               <div className="pp2-id">
                 <h2>{p.name}</h2>
-                <div className="meta"><Flag name={tn} h={14}/> <span>{tn}</span> · <span>{fullPos(p.primaryPos)}</span> <span className={"ps-tag "+(predStart?'on':'off')}>{predStart?'Starter':'Bench'}</span></div>
+                <div className="meta"><Flag name={tn} h={14}/> <span>{tn}</span> · <span>{primLabel}</span> <span className={"ps-tag "+(predStart?'on':'off')}>{predStart?'XI':'Bench'}</span></div>
                 {(() => {
                   const od = oddForStat((D.playerOdds||{})[pid], stat, effThreshold);
                   return od ? <div className="pp2-odd">{oddDescLine(stat, effThreshold)} <b>${(+od.v).toFixed(2)}</b></div> : null;
