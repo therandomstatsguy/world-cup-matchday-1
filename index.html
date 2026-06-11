@@ -512,8 +512,8 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
 .tsc-subline{display:flex;justify-content:space-between;gap:8px;font-size:10px;color:var(--t3);padding:1px 6px 5px;line-height:1.3}
 .tsc-subline span:last-child{text-align:right}
 .tsc-subline b{color:var(--accB);font-weight:800}
-/* player-stats two-team columns: stay side-by-side (incl. mobile) */
-.psb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* player-stats two-team columns: stay side-by-side (incl. mobile); minmax(0,..) stops cards blowing out the grid */
+.psb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .sl-track{display:flex;align-items:center;gap:8px;margin-top:4px}
 .sl-track input[type=range]{flex:1}
 .sl-odd{font-size:10px;font-weight:800;color:var(--accB);white-space:nowrap;min-width:62px}
@@ -533,8 +533,21 @@ body,button,input,select,textarea,.tab-btn{font-family:'FIFA Sans','Inter',syste
   .gb-meta{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .gb-aest{display:none}
   .glog-grid{grid-template-columns:1fr}
+  /* team stats: shrink value cols & bars so rows never exceed the screen; labels wrap */
+  .tsc{padding:9px 7px}
+  .tsc-row{grid-template-columns:24px minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr) 24px;gap:3px;padding:6px 3px}
+  .tsc-row .tsc-barW{min-width:0}
+  .tsc-v{font-size:11px}
+  .tsc-lbl{font-size:8.5px;letter-spacing:.1px;white-space:normal;line-height:1.12;gap:2px}
+  .tsc-hdr{padding:0 2px}
+  .tsc-hdr .pill{min-width:0;font-size:11px;padding:5px 7px}
+  .tsc-hdr .pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .odds-h2h{gap:7px 8px}
+  .odds-h2h .oh{font-size:11px}
+  .glog{padding:8px}
+  .glog-grid{gap:8px}
   /* player stats: keep both teams side-by-side, shrink cards to fit two narrow columns */
-  .psb-grid{grid-template-columns:1fr 1fr;gap:5px}
+  .psb-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px}
   .psb-grid .pcard{gap:5px;padding:6px 6px;border-radius:7px;margin-bottom:4px}
   .psb-grid .pcard .pinfo{gap:4px}
   .psb-grid .pcard .jersey{min-width:19px;height:19px;font-size:9.5px;padding:0 3px}
@@ -1224,7 +1237,7 @@ function MatchdayView({onPickPlayer, onPickMatch, selDate}) {
   const onSwipeEnd = e => {
     if (swipeX.current == null) return;
     const dx = (e.changedTouches ? e.changedTouches[0].clientX : 0) - swipeX.current;
-    if (dx < -45) setMktView('stats'); else if (dx > 45) setMktView('markets');
+    if (dx < -45) setMktView('stats');
     swipeX.current = null;
   };
 
@@ -1350,13 +1363,13 @@ function MatchdayView({onPickPlayer, onPickMatch, selDate}) {
             effLine={effLine} effTotal={effTotal}
             lineValues={lineValues} totalValues={totalValues}
           />
+          </div>
           <div style={{marginTop:18}}>
             <div className="stit">Game Logs · Click any row for full match breakdown</div>
             <div className="glog-grid">
               <GameLog title={f.home} tid={f.homeTid} rows={rowsA} time={time} view={mktView} odds={odds} side="home" onPick={onPickMatch} effLine={effLine} effTotal={effTotal} overCorners={overCorners} overCards={overCards} teamCornerLine={corLineA} teamCardLine={cardLineA} />
               <GameLog title={f.away} tid={f.awayTid} rows={rowsB} time={time} view={mktView} odds={odds} side="away" onPick={onPickMatch} effLine={effLine} effTotal={effTotal} overCorners={overCorners} overCards={overCards} teamCornerLine={corLineB} teamCardLine={cardLineB} />
             </div>
-          </div>
           </div>
         </Fragment>
       )}
